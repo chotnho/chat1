@@ -3,6 +3,8 @@ import{Button, Collapse, Typography} from 'antd'
 import styled from "styled-components";
 import { PlusSquareOutlined } from "@ant-design/icons";
 
+import { AppContext } from "../../Context/AppProvider";
+
 const {Panel} = Collapse
 const PanelStyded = styled(Panel)`
     &&& {
@@ -28,14 +30,20 @@ const LinkStyded = styled(Typography.Link)`
 `;
 
 export default function RoomList() {
+    const {rooms, setIsAddRoomVisible, setSelectedRoomId} = React.useContext(AppContext);
+    console.log({rooms});
+    const handleAddRoom = () =>{
+        setIsAddRoomVisible(true)
+    }
     return(
         <Collapse ghost defaultActiveKey={['1']}>
-         <PanelStyded header="Danh sách các phòng" key={'1'}>
-             <LinkStyded>Room1</LinkStyded>
-             <LinkStyded>Room2</LinkStyded>
-             <LinkStyded>Room3</LinkStyded>
+         <PanelStyded header="Danh sách các phòng" key='1'>
+            {
+                rooms.map((room) => (
+                    <LinkStyded key={room.id} onClick={() => setSelectedRoomId(room.id)}>{room.name}</LinkStyded>
+                ))}
              <Button type='text' icon={<PlusSquareOutlined/>} 
-             className="add-room">Thêm phòng</Button>
+             className="add-room" onClick={handleAddRoom}>Thêm phòng</Button>
          </PanelStyded>
         </Collapse>
     )

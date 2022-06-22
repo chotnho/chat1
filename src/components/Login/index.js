@@ -1,12 +1,14 @@
 import React from "react";
-import {Row, Col, Button, Typography} from 'antd';
+import {Row, Col, Button, Typography, Form} from 'antd';
 import firebase,{ auth } from '../../firebase/config';
-import { addDocument } from "../../firebase/services";
+import { addDocument, generateKeywords } from "../../firebase/services";
+
+
 
 const {Title}= Typography;
 
 const fbProvider = new firebase.auth.FacebookAuthProvider();
-
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 export default function Login(){
     
     const handleLogin = async () =>{
@@ -17,8 +19,9 @@ export default function Login(){
             displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
-            uid: user.displayName,
+            uid: user.uid,
             providerId: additionalUserInfo.providerId,
+            keywords: generateKeywords(user.displayName)
         })
        }
        ;
@@ -26,24 +29,40 @@ export default function Login(){
     
 
     return(
-        <div>
-            <Row justify='center' style={{height: 800}}>
-                <Col span={8}>
-                <Title style={{textAlign:'center'}} Level={3}
+        <Form
+
+        > 
+            <Row span={15} justify='center' 
+                   style={{
+                           height: 300,
+                           backgroundColor:'#d9f7be', 
+                           width: '50%', 
+                            marginLeft:300,
+                           marginTop: 100,
+                          }}>
+                 
+                    
+                <Col span={14}>
+                <Title style={{textAlign:'center', marginTop: 30, color:'#ffadd2'}} Level={1}
+                
                 >
-                 Thiên Di Chat
+                Login with chats
                 </Title>
-                <Button style={{width:'100%', marginButton:5}}>
+                <Button 
+                      type="primary"  className="login-form-button" 
+                      style={{width:'100%', marginTop: 10 , marginButton:20}}   
+                      onClick={() => handleLogin(googleProvider)}>
                     Đăng nhập bằng google
                 </Button>
-                <Button
-                   style={{ width: '100%' }}
-                   onClick={() => handleLogin(fbProvider)}
+                <Button 
+                    type="primary" className="login-form-button"
+                    style={{ width: '100%', marginTop: 15 }}
+                    onClick={() => handleLogin(fbProvider)}
                 >
                 Đăng nhập bằng Facebook
                 </Button>
                 </Col>
-            </Row>
-        </div>
+            </Row>            
+        </Form>
     );
 }

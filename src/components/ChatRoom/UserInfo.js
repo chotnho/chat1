@@ -1,8 +1,12 @@
-//import { LogoutOutlined } from "@ant-design/icons";
+
 import { Button, Avatar, Typography } from "antd";
 import React from "react";
 import styled from "styled-components";
-import { auth, db } from "../../firebase/config";
+import { auth } from "../../firebase/config";
+import {AuthContext} from  '../../Context/AuthProvider'
+
+
+
 const WapperStyded = styled.div`
 display: flex;
 justify-content: space-between;
@@ -17,22 +21,19 @@ border-bottom: 1px solid rgba(238, 238, 238);
 
 
 export default function UserInfo(){
-    React.useEffect(() =>{
-        db.collection('users').onSnapshot((snapshot) =>{
-            const data = snapshot.docs.map(doc => ({
-                ...doc.data(),
-                id: doc.id
-            }))
-            console.log({data, snapshot, docs: snapshot.docs});
-        })
-    })
-
     
+
+    const {
+        user: {displayName, photoURL},
+    } = React.useContext(AuthContext);
+    //console.log({data});
     return(
         <WapperStyded>
             <div>
-                <Avatar>Aaaa</Avatar>
-                <Typography.Text className="username">Thiendi test</Typography.Text>
+            <Avatar src={photoURL}>
+          {photoURL ? '' : displayName?.charAt(0)?.toUpperCase()}
+        </Avatar>
+        <Typography.Text className='username'>{displayName}</Typography.Text>
             </div>
             <Button ghost
             onClick={() => auth.signOut()}
