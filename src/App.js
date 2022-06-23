@@ -1,26 +1,23 @@
 import './App.css';
 import {Routes, Route, BrowserRouter} from 'react-router-dom'
 
-import Login from './components/Login';
-import ChatRoom from './components/ChatRoom';
-import AuthProvider from './Context/AuthProvider';
-import AppProvider from './Context/AppProvider';
-import  AddRoomModal  from './components/Modals/AddRoomModal';
-import InviteMemberModal from './components/Modals/InviteMemberModal';
+import Login from './components/Login/Login';
+import Chats from './components/Chat/Chats';
+import {AuthProvider} from "./context/AuthContext"
+
+
 
 function App (){
   return( 
   <BrowserRouter>
-    <AuthProvider>
-      <AppProvider>
+   <AuthProvider> 
         <Routes>
-          <Route exact path="/login" element={<Login/>}/>
-           <Route path="/chatroom" element={<ChatRoom/>}/>
+           <Route path="/chats" element={<Chats/>}/>
+           <Route exact path="/" element={<Login/>}/>
         </Routes>
-        <AddRoomModal/>
-        <InviteMemberModal/>
-      </AppProvider>
-    </AuthProvider>
+        
+       </AuthProvider>
+   
   </BrowserRouter>
   )
 }
